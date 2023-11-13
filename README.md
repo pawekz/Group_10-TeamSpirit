@@ -36,8 +36,8 @@ Progress:
 
 
 LEGEND:
-🔲 :black_square_button:	- to be implemented
+:black_square_button:		- to be implemented
 :negative_squared_cross_mark:	- already implemented, still with bugs
-✅ :white_check_mark:	   	- implemented
+:white_check_mark:	   	- implemented
 :trident:			- ready to present
 
