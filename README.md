@@ -36,6 +36,7 @@ Progress:
 
 
 LEGEND:
+
 :black_square_button:		- to be implemented
 
 :negative_squared_cross_mark:	- already implemented, still with bugs
