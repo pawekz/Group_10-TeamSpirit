@@ -6,5 +6,7 @@ public class Main {
         System.out.println("Testing...");
         System.out.println("Testing...");
         System.out.println("Testing...");
+
+        Testing t = new Testing();
     }
 }
