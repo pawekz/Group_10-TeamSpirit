@@ -1,3 +1,5 @@
+package com.pos.teamspirit;
+
 import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle;
