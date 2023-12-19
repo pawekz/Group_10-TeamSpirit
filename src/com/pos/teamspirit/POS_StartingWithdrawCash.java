@@ -153,7 +153,7 @@ public class POS_StartingWithdrawCash  {
             {
                 startingCashPanel.setBorder(new TitledBorder("Starting Cash"));
                 startingCashPanel.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax
-                .swing.border.EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing
+                .swing.border.EmptyBorder(0,0,0,0),"" /*"JFor\u006dDesi\u0067ner \u0045valu\u0061tion"*/,javax.swing
                 .border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.
                 Font("Dia\u006cog",java.awt.Font.BOLD,12),java.awt.Color.red
                 ),startingCashPanel. getBorder()));startingCashPanel. addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override
@@ -262,7 +262,7 @@ public class POS_StartingWithdrawCash  {
             //---- endTransactionPageButton ----
             endTransactionPageButton.setText("END TRANSACTION");
             endTransactionPageButton.addActionListener(e -> {
-			endTransactionPage(e);
+			endTransactionPage(e); //
 		});
 
             GroupLayout pos_starting_withdraw_cashContentPaneLayout = new GroupLayout(pos_starting_withdraw_cashContentPane);
