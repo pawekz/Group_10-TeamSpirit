@@ -11,17 +11,20 @@ import javax.swing.border.*;
 /**
  * @author Pawekz
  */
-public class POS_Transaction {
-    public POS_Transaction() {
-        initComponents();
-    }
+public class POS_Transaction extends JFrame{
 
+    public void startTransaction(){
+        this.setVisible(true);
+    }
+    public POS_Transaction() {
+        initComponents();                       //butangan siya ani to call the other components
+        this.POS_Transaction.setVisible(true);  //similar to frame.setVisible(true)
+
+    }
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - ODETTE PISOWIFI
         POS_Transaction = new JFrame();
-        menuBar2 = new JMenuBar();
-        menu2 = new JMenu();
         transactionInfo = new JPanel();
         customerNameTextField = new JTextField();
         customerNameLabel = new JLabel();
@@ -35,33 +38,26 @@ public class POS_Transaction {
         productSelectionPanel = new JPanel();
         productSelectionScrollPane = new JScrollPane();
         productSelectionTable = new JTable();
+        cancelTransactionButton = new JButton();
+        confirmTransactionButton = new JButton();
 
         //======== POS_Transaction ========
         {
             POS_Transaction.setTitle("ORDER PAGE");
             var POS_TransactionContentPane = POS_Transaction.getContentPane();
 
-            //======== menuBar2 ========
-            {
-
-                //======== menu2 ========
-                {
-                    menu2.setText("FILE");
-                }
-                menuBar2.add(menu2);
-            }
-            POS_Transaction.setJMenuBar(menuBar2);
-
             //======== transactionInfo ========
             {
                 transactionInfo.setBorder(new CompoundBorder(
                     new TitledBorder("Transaction Information"),
                     new EmptyBorder(5, 5, 5, 5)));
-                transactionInfo.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder
-                ( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border. TitledBorder. CENTER, javax. swing. border
-                . TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt
-                . Color. red) ,transactionInfo. getBorder( )) ); transactionInfo. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
-                propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( )
+                transactionInfo.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (
+                new javax. swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion"
+                , javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
+                , new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 )
+                , java. awt. Color. red) ,transactionInfo. getBorder( )) ); transactionInfo. addPropertyChangeListener (
+                new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
+                ) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( )
                 ; }} );
 
                 //---- customerNameLabel ----
@@ -109,13 +105,13 @@ public class POS_Transaction {
                             .addGroup(transactionInfoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(customerAddressLabel)
                                 .addComponent(customerAddressTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                            .addContainerGap(36, Short.MAX_VALUE))
+                            .addContainerGap(53, Short.MAX_VALUE))
                 );
             }
 
             //======== selectOrderPanel ========
             {
-                selectOrderPanel.setBorder(new TitledBorder("Order"));
+                selectOrderPanel.setBorder(new TitledBorder("Customer Order"));
 
                 //======== selectOrderScrollPane ========
                 {
@@ -134,7 +130,7 @@ public class POS_Transaction {
                 selectOrderPanelLayout.setVerticalGroup(
                     selectOrderPanelLayout.createParallelGroup()
                         .addGroup(selectOrderPanelLayout.createSequentialGroup()
-                            .addComponent(selectOrderScrollPane, GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                            .addComponent(selectOrderScrollPane, GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
                             .addContainerGap())
                 );
             }
@@ -154,16 +150,22 @@ public class POS_Transaction {
                     productSelectionPanelLayout.createParallelGroup()
                         .addGroup(productSelectionPanelLayout.createSequentialGroup()
                             .addContainerGap()
-                            .addComponent(productSelectionScrollPane, GroupLayout.PREFERRED_SIZE, 437, GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(productSelectionScrollPane, GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                            .addContainerGap())
                 );
                 productSelectionPanelLayout.setVerticalGroup(
                     productSelectionPanelLayout.createParallelGroup()
                         .addGroup(productSelectionPanelLayout.createSequentialGroup()
-                            .addComponent(productSelectionScrollPane, GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                            .addComponent(productSelectionScrollPane, GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
                             .addContainerGap())
                 );
             }
+
+            //---- cancelTransactionButton ----
+            cancelTransactionButton.setText("Cancel");
+
+            //---- confirmTransactionButton ----
+            confirmTransactionButton.setText("Confirm");
 
             GroupLayout POS_TransactionContentPaneLayout = new GroupLayout(POS_TransactionContentPane);
             POS_TransactionContentPane.setLayout(POS_TransactionContentPaneLayout);
@@ -171,12 +173,18 @@ public class POS_Transaction {
                 POS_TransactionContentPaneLayout.createParallelGroup()
                     .addGroup(POS_TransactionContentPaneLayout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addGroup(POS_TransactionContentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                            .addComponent(transactionInfo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addGroup(POS_TransactionContentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                             .addGroup(POS_TransactionContentPaneLayout.createSequentialGroup()
                                 .addComponent(selectOrderPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(productSelectionPanel, GroupLayout.PREFERRED_SIZE, 458, GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(POS_TransactionContentPaneLayout.createParallelGroup()
+                                    .addGroup(GroupLayout.Alignment.TRAILING, POS_TransactionContentPaneLayout.createSequentialGroup()
+                                        .addComponent(confirmTransactionButton)
+                                        .addGap(142, 142, 142)
+                                        .addComponent(cancelTransactionButton)
+                                        .addGap(86, 86, 86))
+                                    .addComponent(productSelectionPanel, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(transactionInfo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(15, Short.MAX_VALUE))
             );
             POS_TransactionContentPaneLayout.setVerticalGroup(
@@ -184,11 +192,17 @@ public class POS_Transaction {
                     .addGroup(POS_TransactionContentPaneLayout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(transactionInfo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(POS_TransactionContentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(POS_TransactionContentPaneLayout.createParallelGroup()
                             .addComponent(selectOrderPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(productSelectionPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(POS_TransactionContentPaneLayout.createSequentialGroup()
+                                .addComponent(productSelectionPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(45, 45, 45)
+                        .addGroup(POS_TransactionContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(confirmTransactionButton)
+                            .addComponent(cancelTransactionButton))
+                        .addContainerGap(27, Short.MAX_VALUE))
             );
             POS_Transaction.pack();
             POS_Transaction.setLocationRelativeTo(POS_Transaction.getOwner());
@@ -199,8 +213,6 @@ public class POS_Transaction {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - ODETTE PISOWIFI
     private JFrame POS_Transaction;
-    private JMenuBar menuBar2;
-    private JMenu menu2;
     private JPanel transactionInfo;
     private JTextField customerNameTextField;
     private JLabel customerNameLabel;
@@ -214,5 +226,7 @@ public class POS_Transaction {
     private JPanel productSelectionPanel;
     private JScrollPane productSelectionScrollPane;
     private JTable productSelectionTable;
+    private JButton cancelTransactionButton;
+    private JButton confirmTransactionButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
