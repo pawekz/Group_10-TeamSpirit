@@ -37,7 +37,7 @@ LEGEND:
 
 🔲 - to be implemented
 
-❎ - already implemented, still with bugs / rework with logic
+❎ - already implemented, still with bugs / rework logic
 
 ✅ - implemented
 
