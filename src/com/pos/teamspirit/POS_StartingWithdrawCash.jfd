@@ -4,38 +4,47 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq {space :p:121:p, par l {comp panel1:::::x, comp panel2:::::x}, space :p:102:p}, seq t {space ::240:x, par l {seq t {comp startTransactionPageButton:::p::p, space :p:229:p}, seq t {comp endTransactionPageButton:::p:147:p, space :p:228:p}}}}"
-			"$verticalGroup": "par l {seq t {space :p:33:p, comp panel1:::p::p, space :p:27:p, comp startTransactionPageButton:::p::p, space :p:28:p, comp panel2:::p:105:p, space s:::p, comp endTransactionPageButton:::p::p, space ::52:x}}"
+			"$horizontalGroup": "par l {seq {space :p:121:p, par l {comp startingCashPanel:::::x, comp withdrawCashPanel:::::x}, space :p:102:p}, seq t {space ::240:x, par l {seq t {comp startTransactionPageButton:::p::p, space :p:229:p}, seq t {comp endTransactionPageButton:::p:147:p, space :p:228:p}}}}"
+			"$verticalGroup": "par l {seq t {space :p:33:p, comp startingCashPanel:::p:113:p, space :p:27:p, comp startTransactionPageButton:::p::p, space :p:28:p, comp withdrawCashPanel:::p:105:p, space s:::p, comp endTransactionPageButton:::p::p, space ::58:x}}"
 		} ) {
 			name: "pos_starting_withdraw_cash"
 			"title": "STARTING CASH | WITHDRAW CASH"
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-				"$horizontalGroup": "par l {seq l {space :::p, comp startingCashLabel:::p::p, space :p:50:p, par l:::p {seq l {comp startingCashConfirmButton:::p::p, space :::x, comp startingCashCancelButton:::p::p}, comp startingCashTextFIeld::::246:x}, space ::39:x}}"
-				"$verticalGroup": "par l {seq t {space ::11:x, par b {comp startingCashTextFIeld::b:p::p, comp startingCashLabel::b:p::p}, space s:::p, par b {comp startingCashConfirmButton::b:p::p, comp startingCashCancelButton::b:p::p}, space :p:14:p}}"
+				"$horizontalGroup": "par l {seq l {space :::p, comp startingCashLabel:::p::p, space :p:50:p, par l:::p {seq l {comp startingCashConfirmButton:::p::p, space :::x, comp startingCashCancelButton:::p::p}, comp startingCashTextField::::246:x}, space ::39:x}}"
+				"$verticalGroup": "par l {seq t {space :::x, par b {comp startingCashTextField::b:p::p, comp startingCashLabel::b:p::p}, space s:::p, par b {comp startingCashConfirmButton::b:p::p, comp startingCashCancelButton::b:p::p}, space :p:14:p}}"
 			} ) {
-				name: "panel1"
+				name: "startingCashPanel"
 				"border": new javax.swing.border.TitledBorder( "Starting Cash" )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "startingCashLabel"
 					"text": "Amount"
 				} )
 				add( new FormComponent( "javax.swing.JTextField" ) {
-					name: "startingCashTextFIeld"
+					name: "startingCashTextField"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "startingCashConfirmButton"
 					"text": "Confirm"
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startingCashConfirm", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startingCashConfirm", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startingCashConfirm", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startingCashConfirm", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startingCashConfirm", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startingCashConfirm", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startingCashConfirm", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startingCashConfirm", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "startingCashCancelButton"
-					"text": "Cancel"
+					"text": "Clear"
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startingCashCancel", true ) )
 				} )
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-				"$horizontalGroup": "par l {seq l {space :::p, comp withdrawCashLabel:::p::p, space :p:35:p, par l:::p {comp withdrawCashTextField:::::x, seq l {comp withdrawCashConfirmButton:::p::p, space ::92:x, comp withdrawCashCancelButton:::p::p}}, space ::54:x}}"
-				"$verticalGroup": "par l {seq t {space :::x, par b {comp withdrawCashLabel::b:p::p, comp withdrawCashTextField::b:p::p}, space s:::p, par b {comp withdrawCashConfirmButton::b:p::p, comp withdrawCashCancelButton::b:p::p}, space :::p}}"
+				"$horizontalGroup": "par l {seq l {space :::p, comp withdrawCashLabel:::p::p, space ::50:x, par l {seq {comp withdrawCashConfirmButton:::p::p, space :p:92:p, comp withdrawCashCancelButton:::p::p}, comp withdrawCashTextField:::p:246:p}, space :p:39:p}}"
+				"$verticalGroup": "par l {seq t {space :::x, par l {comp withdrawCashLabel::t:p::p, comp withdrawCashTextField::t:p::p}, space s:::p, par b {comp withdrawCashCancelButton::b:p::p, comp withdrawCashConfirmButton::b:p::p}, space :::p}}"
 			} ) {
-				name: "panel2"
+				name: "withdrawCashPanel"
 				"border": new javax.swing.border.TitledBorder( "Withdraw Cash" )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "withdrawCashLabel"
@@ -47,19 +56,29 @@ new FormModel {
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "withdrawCashConfirmButton"
 					"text": "Confirm"
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "withdrawCashConfirm", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "withdrawCashConfirm", true ) )
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "withdrawCashConfirm", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "withdrawCashCancelButton"
-					"text": "Cancel"
+					"text": "Clear"
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "withdrawCashCancel", true ) )
 				} )
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "startTransactionPageButton"
 				"text": "START TRANSACTION"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startTransactionPage", true ) )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startTransactionPage", true ) )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startTransactionPage", true ) )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startTransactionPage", true ) )
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "endTransactionPageButton"
 				"text": "END TRANSACTION"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "endTransactionPage", true ) )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "endTransactionPage", true ) )
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 225, 125 )
