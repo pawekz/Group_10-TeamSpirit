@@ -10,9 +10,8 @@ import loginandsignup.Login;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.*;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -57,17 +56,12 @@ public class POS_StartingWithdrawCash  {
     private void startingCashCancel(ActionEvent e) {
         startingCashTextField.setText("");
 
-
-        //Call JohnJohn loginPage.java <<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        /*new LoginPage().setVisible(true);
-        frame.dispose();*/
     }
 
     private void startTransactionPage(ActionEvent e) {
         // TODO add your code here
 
         POS_Transaction posTransaction = new POS_Transaction();
-        //posTransaction.startTransaction();
 
     }
 
@@ -77,43 +71,52 @@ public class POS_StartingWithdrawCash  {
     }
 
     private void withdrawCashConfirm(ActionEvent e) {
-        // TODO add your code here
+        // Obtain cashierID from some source. This could be an input, a config file, a GUI component, etc.
+        //
+        int cashierID = 1; //Placeholder.
 
-        //the logic is quite corny, it should increment the total number of sales in a transactions in order to get the
-        // endingcash (endingcash = startingcash + (summation of total amount in every transaction whos cashierID is the same as the logged in cashier within the day
-        //but it does demonstrate CRUD except delete functionality
+        BigDecimal withdrawCash = new BigDecimal(withdrawCashTextField.getText());
 
+        Connection db = DatabaseConnection.getConnection();
+        checkCash(db, cashierID, withdrawCash);
+    }
 
-
-        double endCashInput = Double.parseDouble(withdrawCashTextField.getText()); //should match the database amount
-        int cashierID = 1; //it shouldnt be hardcoded, it should be integrate on the loginPage
-        String endTimeOfTransaction = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-        DatabaseConnection con = new DatabaseConnection();
-        Connection connection = con.getConnection();
+    private void checkCash(Connection db, int cashierID, BigDecimal withdrawCash) {
         try{
-            String sql = "UPDATE teamspiritpos.sales SET end_time = ?, ending_cash = ? WHERE cashier_id = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, endTimeOfTransaction);
-            statement.setDouble(2, endCashInput);
-            statement.setInt(3, cashierID);
-            statement.executeUpdate();
-
-            JOptionPane.showMessageDialog(null, "Ending cash entered successfully");
-            statement.close();
-            connection.close();
-
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+            BigDecimal endingCashDB = getEndingCash(db, cashierID);
+            if (withdrawCash.compareTo(endingCashDB) == 0) {
+                JOptionPane.showMessageDialog(null,"The input cash matches with the calculated ending cash.");
+                /*System.out.println("The input cash matches with the calculated ending cash.");*/
+            } else {
+                JOptionPane.showMessageDialog(null,"The input cash does not match with the calculated ending cash.\nPlease recheck your cash register and recount the money" );
+                /*System.out.println("The input cash does not match with the calculated ending cash.");*/
+                System.out.println("Ending Cash: " + endingCashDB);
+            }
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
         }
+    }
+
+    private BigDecimal getEndingCash(Connection db, int cashierID) throws SQLException {
+        BigDecimal endingCashDB = null;
+        String query1 = "SELECT ending_cash as endingCash FROM teamspiritpos.sales WHERE cashier_id = ? ORDER BY sale_id DESC LIMIT 1";
+        try (PreparedStatement pstmt = db.prepareStatement(query1)) {
+            pstmt.setInt(1, cashierID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()){
+                    endingCashDB = rs.getBigDecimal("endingCash");
+                } else {
+                    throw new RuntimeException("No sales found for cashier " + cashierID);
+                }
+            }
+        }
+        return endingCashDB;
     }
 
     private void endTransactionPage(ActionEvent e) {
         // TODO add your code here
 
         //it should call "LoginAndSignUp.java" in 'src/loginandsignup'
-
-
         Login login = new Login();
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
