@@ -23,7 +23,7 @@ Sales Transactions and Payment Processing:
 
 🔲 As a cashier, I want to start a new sale, add items to the cart, and calculate the total amount.
 
-❎ As a cashier, I want to input starting cash in my drawer and withdraw cash from drawer. (its like buffer cash, pang sukli)
+✅ As a cashier, I want to input starting cash in my drawer and withdraw cash from drawer. (its like buffer cash, pang sukli)
 
 ❎ As a cashier, I want to apply discounts, handle returns, and process refunds.
 
