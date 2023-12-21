@@ -25,9 +25,9 @@ Sales Transactions and Payment Processing:
 
 ❎ As a cashier, I want to input starting cash in my drawer and withdraw cash from drawer. (its like buffer cash, pang sukli)
 
-🔲 As a cashier, I want to apply discounts, handle returns, and process refunds.
+❎ As a cashier, I want to apply discounts, handle returns, and process refunds.
 
-🔲 As a cashier, I want to accept various payment methods (cash, credit/debit cards, mobile wallets). (be creative, no need for any hardware)
+❎ As a cashier, I want to accept various payment methods (cash, credit/debit cards, mobile wallets). (be creative, no need for any hardware)
 
 🔲 As a manager, I want to view sales reports and analyze transaction data.
 
