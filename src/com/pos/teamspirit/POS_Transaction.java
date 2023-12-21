@@ -1,5 +1,7 @@
 package com.pos.teamspirit;
 
+import loginandsignup.CashierPayment;
+
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -7,12 +9,17 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 /*
  * Created by JFormDesigner on Sat Dec 16 06:29:52 PST 2023
  */
@@ -33,6 +40,19 @@ public class POS_Transaction extends JFrame{
         //orderListPropertyChange(null);       //display order table
         this.POS_Transaction.setVisible(true);  //similar to frame.setVisible(true)
 
+
+        customerNameTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                try {
+                    if(!customerNameTextField.getText().trim().equals("")) {
+                        customerTransactionID(null);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
 
     public JTextField getCustomerNameTextField() {
@@ -43,10 +63,11 @@ public class POS_Transaction extends JFrame{
         return customerAddressTextField;
     }
 
+
     private void customerName(ActionEvent e) {
         // TODO add your code here
         //capture customerNameTextField to be used by other method, make sure it is accessible
-        customerNameTextField.getText();        
+        customerNameTextField.getText();
     }
 
     private void customerAddress(ActionEvent e) {
@@ -74,11 +95,11 @@ public class POS_Transaction extends JFrame{
 
             while (rs.next()) {
                 String productID = rs.getString("product_id");
-                System.out.println("Product ID: " + productID);     // Debug print
+                //System.out.println("Product ID: " + productID);     // Debug print
                 String productName = rs.getString("product_name");
-                System.out.println("Product Name: " + productName); // Debug print
+                //System.out.println("Product Name: " + productName); // Debug print
                 String price = rs.getString("price");
-                System.out.println("Price: " + price);              // Debug print
+                //System.out.println("Price: " + price);              // Debug print
                 tableModel.addRow(new Object[]{productID, productName, price});
             }
             productListTable.setModel(tableModel);
@@ -101,7 +122,7 @@ public class POS_Transaction extends JFrame{
 
     private void cancelTransaction(ActionEvent e) {
         // TODO add your code here
-        System.out.println("Time to exit");
+        System.out.println("Time to exit, no more transaction");
         POS_Transaction.dispose(); //close, similar to clicking exit
 
 
@@ -163,7 +184,7 @@ public class POS_Transaction extends JFrame{
             String input = JOptionPane.showInputDialog("Enter quantity");
             return (input != null && !input.isEmpty()) ? Integer.parseInt(input) : 1;
         } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid integer quantity.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please enter a valid number (integer).", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return 1;
         }
     }
@@ -178,20 +199,106 @@ public class POS_Transaction extends JFrame{
     }
 
     private void minusProductToOrder(ActionEvent e) {
-        // TODO add your code here
-        //clicking the minus button will either remove the item from the list or update the quantity
         int selectedRow = orderListTable.getSelectedRow();
-        if (selectedRow != -1) {
-            int quantity = getQuantityFromUser();
-            if (quantity > 0) {
-                int currentQuantity = (int) orderListTable.getValueAt(selectedRow, 2);
-                if (quantity >= currentQuantity) {
-                    model.removeRow(selectedRow);
-                } else if (quantity < currentQuantity) {
-                    model.setValueAt(currentQuantity - quantity, selectedRow, 2);
-                }
-            }
+        if (selectedRow == -1) {
+            return;
         }
+        int quantity = getQuantityFromUser();
+        if (quantity <= 0) {
+            return;
+        }
+        int currentQuantity = (int) orderListTable.getValueAt(selectedRow, 2);
+        double price = (double) orderListTable.getValueAt(selectedRow, 1);
+        if (quantity >= currentQuantity) {
+            model.removeRow(selectedRow);
+        } else {
+            model.setValueAt(currentQuantity - quantity, selectedRow, 2);
+            model.setValueAt((currentQuantity - quantity) * price, selectedRow, 3);
+        }
+
+        // it should update the total
+        double totalAmount = calculateTotalAmount();
+        totalTextField.setText(totalAmount + ""); // set total amount to the totalTextField.
+    }
+
+    private void confirmTransaction(ActionEvent e) {
+        try {
+            // Initialize your database connection first
+            DatabaseConnection con = new DatabaseConnection();
+            Connection connection = DatabaseConnection.getConnection();
+
+            // Fetch starting cash
+            BigDecimal startingCash = new BigDecimal(POS_StartingWithdrawCash.startingCash);
+
+            // Fetch user inputs
+            // Fetch user inputs
+            String customerName = customerNameTextField.getText();
+            String customerAddress = customerAddressTextField.getText();
+
+            if (customerName == null || customerName.trim().isEmpty() || customerAddress == null || customerAddress.trim().isEmpty()) {
+                // One of the fields is empty or null. Handle this case (perhaps show an error message and return)
+                JOptionPane.showMessageDialog(null, "Customer Name and Address are required.");
+                return;
+            }
+
+            // Calculate total amount
+            Double totalAmount = calculateTotalAmount();
+
+            // Calculate ending cash
+            BigDecimal endingCash = startingCash.add(BigDecimal.valueOf(totalAmount));
+
+            // Hardcode cashier_id to '1'
+            int cashierId = 1;
+
+            // Prepare SQL statement
+            String sql = "INSERT INTO teamspiritpos.sales (cashier_id, start_time, starting_cash, total_amount, ending_cash, customer_name, customer_address) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, cashierId); // set cashier_id
+            System.out.println("Cashier ID: " + cashierId);
+            String startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            statement.setString(2, startTime); // set start_time to current timestamp
+            System.out.println("Starting Date: " + startTime);
+            statement.setBigDecimal(3, startingCash); // set starting_cash
+            System.out.println("Starting Cash: " + startingCash);
+            statement.setDouble(4, totalAmount); // set total_amount
+            System.out.println("Total Amount: " + totalAmount);
+            statement.setBigDecimal(5, endingCash); // set ending_cash
+            System.out.println("Ending Cash: " + endingCash);
+            statement.setString(6, customerName); // set customer_name
+            System.out.println("Customer Name: " + customerName);
+            statement.setString(7, customerAddress); // set customer_address
+            System.out.println("Customer Address: " + customerAddress);
+
+            // Execute query and output result
+            int rowsInserted = statement.executeUpdate();
+            System.out.println(rowsInserted > 0 ? "New transaction was inserted successfully!" : "No record inserted.");
+
+            // Close resources
+            statement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        //call CashierPayment.java in package loginandsignup
+        CashierPayment cashierPayment = new CashierPayment();
+        cashierPayment.setVisible(true);
+    }
+    private void customerTransactionID(ActionEvent e) throws SQLException {
+        // TODO add your code here
+        //it should fetch the autoincrement sale_id in the teamspiritpos.sales
+
+        DatabaseConnection con = new DatabaseConnection();
+        Connection connection = DatabaseConnection.getConnection();
+
+        PreparedStatement st = connection.prepareStatement("SELECT MAX(sale_id) FROM teamspiritpos.sales");
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+            int saleId = rs.getInt(1);
+            customerTransactionIDTextField.setText(String.valueOf(saleId));
+            System.out.println("Transaction ID: " + saleId);
+        }
+        customerTransactionIDTextField.repaint();
     }
 
 
@@ -228,13 +335,11 @@ public class POS_Transaction extends JFrame{
                 transactionInfo.setBorder(new CompoundBorder(
                     new TitledBorder("Transaction Information"),
                     new EmptyBorder(5, 5, 5, 5)));
-                transactionInfo.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
-                swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border
-                . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog"
-                ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,transactionInfo. getBorder
-                ( )) ); transactionInfo. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
-                .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException
-                ( ); }} );
+                transactionInfo.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
+                0, 0, 0, 0) , ""/*"JF\u006frmDes\u0069gner \u0045valua\u0074ion"*/, javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
+                . BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
+                red) ,transactionInfo. getBorder( )) ); transactionInfo. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
+                beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
 
                 //---- customerNameTextField ----
                 customerNameTextField.addActionListener(e -> customerName(e));
@@ -253,6 +358,10 @@ public class POS_Transaction extends JFrame{
 
                 //---- customerTransactionIDTextField ----
                 customerTransactionIDTextField.setEditable(false);
+                customerTransactionIDTextField.addActionListener(e -> {try {
+customerTransactionID(e);} catch (SQLException ex) {
+    throw new RuntimeException(ex);
+}});
 
                 GroupLayout transactionInfoLayout = new GroupLayout(transactionInfo);
                 transactionInfo.setLayout(transactionInfoLayout);
@@ -300,12 +409,16 @@ public class POS_Transaction extends JFrame{
 
             //---- confirmTransactionButton ----
             confirmTransactionButton.setText("Confirm");
+            confirmTransactionButton.addActionListener(e -> {
+			confirmTransaction(e);
+
+		});
 
             //======== productList ========
             {
                 productList.addPropertyChangeListener("horizontalScrollBar", e -> {
 			customerSelectedProductPropertyChange(e);
-			customerSelectedProductPropertyChange(e);
+
 		});
                 productList.addPropertyChangeListener("verticalScrollBar", e -> productListPropertyChange(e));
 
@@ -325,7 +438,6 @@ public class POS_Transaction extends JFrame{
             addProductToOrderButton.setFont(new Font("Segoe UI", Font.BOLD, 18));
             addProductToOrderButton.setToolTipText("Select products (left) and it will appear in the order list (right)");
             addProductToOrderButton.addActionListener(e -> {
-			addProductToOrder(e);
 			addProductToOrder(e);
 		});
 
