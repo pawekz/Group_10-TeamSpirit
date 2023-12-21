@@ -5,9 +5,9 @@ Requirements
 
 Cashier Login and Authentication:
 
-🔲 As a cashier, I want to log in securely to the POS system using my credentials (username and password) or other authentication methods (e.g., biometrics).
+❎ As a cashier, I want to log in securely to the POS system using my credentials (username and password) or other authentication methods (e.g., biometrics).
 
-🔲 As a manager, I want to manage cashier accounts, including creating, updating, and deactivating them.
+❎ As a manager, I want to manage cashier accounts, including creating, updating, and deactivating them.
 
 Product Scanning and Inventory Management:
 
