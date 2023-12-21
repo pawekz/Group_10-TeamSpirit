@@ -13,10 +13,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 public class addInventory extends javax.swing.JFrame {
 
+       
     /**
      * Creates new form addInventory
      */
@@ -33,6 +33,7 @@ public class addInventory extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         addProduct = new javax.swing.JLabel();
         prodName = new javax.swing.JLabel();
         prodInputName = new javax.swing.JTextField();
@@ -48,6 +49,20 @@ public class addInventory extends javax.swing.JFrame {
         prodInputReorderLevel = new javax.swing.JTextField();
         goButton = new javax.swing.JButton();
         backButton2 = new javax.swing.JButton();
+        viewButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        productTable = new javax.swing.JTable();
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,6 +90,23 @@ public class addInventory extends javax.swing.JFrame {
 
         backButton2.setText("BACK");
 
+        viewButton.setText("VIEW");
+        viewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewButtonActionPerformed(evt);
+            }
+        });
+
+        productTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Product ID", "Product Name", "Barcode", "Category", "Price", "Stock Level", "Reorder Level"
+            }
+        ));
+        jScrollPane1.setViewportView(productTable);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,32 +114,37 @@ public class addInventory extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(addProduct))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(97, 97, 97)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(prodName)
-                            .addComponent(prodBarcode)
-                            .addComponent(prodCategory)
-                            .addComponent(prodPrice)
-                            .addComponent(priceStockLevel)
-                            .addComponent(prodReorderLevel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(prodInputName)
-                            .addComponent(prodInputBarcode)
-                            .addComponent(prodInputPrice)
-                            .addComponent(prodInputStockLevel)
-                            .addComponent(prodInputReorderLevel)
-                            .addComponent(prodInputCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(addProduct)))
-                .addContainerGap(108, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(goButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(backButton2)
-                .addGap(16, 16, 16))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(prodName)
+                                    .addComponent(prodBarcode)
+                                    .addComponent(prodCategory)
+                                    .addComponent(prodPrice)
+                                    .addComponent(priceStockLevel)
+                                    .addComponent(prodReorderLevel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(prodInputName)
+                                    .addComponent(prodInputBarcode)
+                                    .addComponent(prodInputPrice)
+                                    .addComponent(prodInputStockLevel)
+                                    .addComponent(prodInputReorderLevel)
+                                    .addComponent(prodInputCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addComponent(viewButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(goButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(backButton2)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,10 +179,15 @@ public class addInventory extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(prodInputPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(goButton)
-                    .addComponent(backButton2))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(viewButton)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(backButton2)
+                        .addComponent(goButton)))
+                .addContainerGap(200, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -179,9 +221,9 @@ public class addInventory extends javax.swing.JFrame {
 
         int rowsAffected = statement.executeUpdate();
         if (rowsAffected > 0) {
-            System.out.println("Input successful!");
+            JOptionPane.showMessageDialog(this, "Successfully Added", "Success", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            System.out.println("Input failed. Please try again.");
+           JOptionPane.showMessageDialog(this, "Failed to add. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
         // Close the statement and connection
@@ -194,6 +236,13 @@ public class addInventory extends javax.swing.JFrame {
    
     
     }//GEN-LAST:event_goButtonActionPerformed
+
+    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
+        
+        viewInventory viewInv = new viewInventory();
+        viewInv.setVisible(true);
+                
+    }//GEN-LAST:event_viewButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,6 +283,8 @@ public class addInventory extends javax.swing.JFrame {
     private javax.swing.JLabel addProduct;
     private javax.swing.JButton backButton2;
     private javax.swing.JButton goButton;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel priceStockLevel;
     private javax.swing.JLabel prodBarcode;
     private javax.swing.JLabel prodCategory;
@@ -246,5 +297,7 @@ public class addInventory extends javax.swing.JFrame {
     private javax.swing.JLabel prodName;
     private javax.swing.JLabel prodPrice;
     private javax.swing.JLabel prodReorderLevel;
+    private javax.swing.JTable productTable;
+    private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
 }
