@@ -37,12 +37,12 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="prodInput" alignment="0" max="32767" attributes="0"/>
-                          <Component id="prodInput2" alignment="0" max="32767" attributes="0"/>
-                          <Component id="prodInput4" alignment="0" max="32767" attributes="0"/>
-                          <Component id="prodInput5" alignment="0" max="32767" attributes="0"/>
-                          <Component id="prodInput6" alignment="0" max="32767" attributes="0"/>
-                          <Component id="prodInput7" alignment="0" pref="93" max="32767" attributes="0"/>
+                          <Component id="prodInputName" alignment="0" max="32767" attributes="0"/>
+                          <Component id="prodInputBarcode" alignment="0" max="32767" attributes="0"/>
+                          <Component id="prodInputPrice" alignment="0" max="32767" attributes="0"/>
+                          <Component id="prodInputStockLevel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="prodInputReorderLevel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="prodInputCategory" alignment="0" pref="93" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -69,36 +69,35 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="prodName" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="prodInput" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="prodInputName" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="prodBarcode" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="prodInput2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="prodInputBarcode" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="prodCategory" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="prodInput7" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="prodCategory" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="prodPrice" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="priceStockLevel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="prodInput5" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="prodInputStockLevel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="prodReorderLevel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="prodInput6" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="prodInputReorderLevel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                      <Component id="prodInput4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Component id="prodInputCategory" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="prodInputPrice" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -106,7 +105,7 @@
                   <Component id="goButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="backButton2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="14" max="32767" attributes="0"/>
+              <EmptySpace pref="20" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -125,47 +124,50 @@
         <Property name="text" type="java.lang.String" value="PRODUCT NAME"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="prodInput">
+    <Component class="javax.swing.JTextField" name="prodInputName">
     </Component>
     <Component class="javax.swing.JLabel" name="prodBarcode">
       <Properties>
         <Property name="text" type="java.lang.String" value="BARCODE"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="prodInput2">
+    <Component class="javax.swing.JTextField" name="prodInputBarcode">
     </Component>
     <Component class="javax.swing.JLabel" name="prodCategory">
       <Properties>
         <Property name="text" type="java.lang.String" value="CATEGORY"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="prodInput7">
+    <Component class="javax.swing.JTextField" name="prodInputCategory">
     </Component>
     <Component class="javax.swing.JLabel" name="prodPrice">
       <Properties>
         <Property name="text" type="java.lang.String" value="PRICE"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="prodInput4">
+    <Component class="javax.swing.JTextField" name="prodInputPrice">
     </Component>
     <Component class="javax.swing.JLabel" name="priceStockLevel">
       <Properties>
         <Property name="text" type="java.lang.String" value="STOCK LEVEL"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="prodInput5">
+    <Component class="javax.swing.JTextField" name="prodInputStockLevel">
     </Component>
     <Component class="javax.swing.JLabel" name="prodReorderLevel">
       <Properties>
         <Property name="text" type="java.lang.String" value="REORDER LEVEL"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="prodInput6">
+    <Component class="javax.swing.JTextField" name="prodInputReorderLevel">
     </Component>
     <Component class="javax.swing.JButton" name="goButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="GO"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="backButton2">
       <Properties>

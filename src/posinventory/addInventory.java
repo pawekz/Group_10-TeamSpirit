@@ -8,6 +8,13 @@ package posinventory;
  *
  * @author User
  */
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 public class addInventory extends javax.swing.JFrame {
 
     /**
@@ -28,17 +35,17 @@ public class addInventory extends javax.swing.JFrame {
 
         addProduct = new javax.swing.JLabel();
         prodName = new javax.swing.JLabel();
-        prodInput = new javax.swing.JTextField();
+        prodInputName = new javax.swing.JTextField();
         prodBarcode = new javax.swing.JLabel();
-        prodInput2 = new javax.swing.JTextField();
+        prodInputBarcode = new javax.swing.JTextField();
         prodCategory = new javax.swing.JLabel();
-        prodInput7 = new javax.swing.JTextField();
+        prodInputCategory = new javax.swing.JTextField();
         prodPrice = new javax.swing.JLabel();
-        prodInput4 = new javax.swing.JTextField();
+        prodInputPrice = new javax.swing.JTextField();
         priceStockLevel = new javax.swing.JLabel();
-        prodInput5 = new javax.swing.JTextField();
+        prodInputStockLevel = new javax.swing.JTextField();
         prodReorderLevel = new javax.swing.JLabel();
-        prodInput6 = new javax.swing.JTextField();
+        prodInputReorderLevel = new javax.swing.JTextField();
         goButton = new javax.swing.JButton();
         backButton2 = new javax.swing.JButton();
 
@@ -60,6 +67,11 @@ public class addInventory extends javax.swing.JFrame {
         prodReorderLevel.setText("REORDER LEVEL");
 
         goButton.setText("GO");
+        goButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goButtonActionPerformed(evt);
+            }
+        });
 
         backButton2.setText("BACK");
 
@@ -80,12 +92,12 @@ public class addInventory extends javax.swing.JFrame {
                             .addComponent(prodReorderLevel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(prodInput)
-                            .addComponent(prodInput2)
-                            .addComponent(prodInput4)
-                            .addComponent(prodInput5)
-                            .addComponent(prodInput6)
-                            .addComponent(prodInput7, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)))
+                            .addComponent(prodInputName)
+                            .addComponent(prodInputBarcode)
+                            .addComponent(prodInputPrice)
+                            .addComponent(prodInputStockLevel)
+                            .addComponent(prodInputReorderLevel)
+                            .addComponent(prodInputCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(addProduct)))
@@ -105,39 +117,83 @@ public class addInventory extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(prodName)
-                    .addComponent(prodInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(prodInputName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(prodBarcode)
-                    .addComponent(prodInput2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(prodInputBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(prodCategory)
-                            .addComponent(prodInput7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(prodCategory)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(prodPrice)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(priceStockLevel)
-                            .addComponent(prodInput5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(prodInputStockLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(prodReorderLevel)
-                            .addComponent(prodInput6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(prodInputReorderLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(prodInput4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(6, 6, 6)
+                        .addComponent(prodInputCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(prodInputPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(goButton)
                     .addComponent(backButton2))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private Connection connection; // Define connection at class level
+                                       
+    private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
+    // Some parts of your code...
+
+
+    try {
+        // Load the MariaDB JDBC driver
+        Class.forName("org.mariadb.jdbc.Driver");
+
+        // Establish the connection
+        String url = "jdbc:mariadb://localhost:3306/teamspiritpos";
+        String username = "root";
+        String password = "";
+
+        connection = DriverManager.getConnection(url, username, password);
+
+        String sql = "INSERT INTO products (product_name, barcode, category, price, stock_level, reorder_level) VALUES (?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, prodInputName.getText()); // Replace with the appropriate input fields
+        statement.setString(2, prodInputBarcode.getText());
+        statement.setString(3, prodInputCategory.getText());
+        statement.setDouble(4, Double.parseDouble(prodInputPrice.getText()));
+        statement.setInt(5, Integer.parseInt(prodInputStockLevel.getText()));
+        statement.setInt(6, Integer.parseInt(prodInputReorderLevel.getText()));
+
+        int rowsAffected = statement.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Input successful!");
+        } else {
+            System.out.println("Input failed. Please try again.");
+        }
+        
+        // Close the statement and connection
+        statement.close();
+        connection.close();
+    } catch (ClassNotFoundException | SQLException ex) {
+        // Handle any errors
+        ex.printStackTrace();
+    }
+   
+    
+    }//GEN-LAST:event_goButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,12 +237,12 @@ public class addInventory extends javax.swing.JFrame {
     private javax.swing.JLabel priceStockLevel;
     private javax.swing.JLabel prodBarcode;
     private javax.swing.JLabel prodCategory;
-    private javax.swing.JTextField prodInput;
-    private javax.swing.JTextField prodInput2;
-    private javax.swing.JTextField prodInput4;
-    private javax.swing.JTextField prodInput5;
-    private javax.swing.JTextField prodInput6;
-    private javax.swing.JTextField prodInput7;
+    private javax.swing.JTextField prodInputBarcode;
+    private javax.swing.JTextField prodInputCategory;
+    private javax.swing.JTextField prodInputName;
+    private javax.swing.JTextField prodInputPrice;
+    private javax.swing.JTextField prodInputReorderLevel;
+    private javax.swing.JTextField prodInputStockLevel;
     private javax.swing.JLabel prodName;
     private javax.swing.JLabel prodPrice;
     private javax.swing.JLabel prodReorderLevel;
