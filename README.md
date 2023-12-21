@@ -46,6 +46,7 @@ LEGEND:
 
 
 **JOHN MICHAEL BACLAYON**
+
 LOG IN PAGE 	
 -As a cashier, I want to log in securely to the POS system using my credentials (username and password) or other authentication methods (e.g., biometrics).
 
@@ -55,6 +56,7 @@ ADD ACCOUNT PAGE
 
 
 **LUKE STANLEY CASTRO**
+
 INVENTORY PAGE (ADD, UPDATE, DELETE) 
 -As a manager, I want to add, update, and delete products in the inventory.
 -As a manager, I want to track stock levels and receive alerts when items are low.  (pop up alert)
@@ -65,6 +67,7 @@ TRANSACTION PAGE
 
 
 **PAULO CARABUENA**
+
 STARTING CASH PAGE 
 -As a cashier, I want to input starting cash in my drawer and withdraw cash from drawer.
 
@@ -74,6 +77,7 @@ START A SALE PAGE (ADD ITEM, CALCULATE)
 
 
 **NEIL BAS**
+
 PAYMENT PAGE 
 -As a cashier, I want to accept various payment methods (cash, credit/debit cards, mobile wallets). (be creative)
 
@@ -82,6 +86,7 @@ REFUNDS PAGE
 
 
 **FRANC RHODNIN CABUSAS**
+
 SEARCH PRODUCT PAGE 
 -As a cashier, I want to search for products by name or category.
 
