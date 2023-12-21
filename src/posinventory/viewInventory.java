@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.mariadb.jdbc.Statement;
 
 public class viewInventory extends javax.swing.JFrame {
@@ -21,7 +22,8 @@ public class viewInventory extends javax.swing.JFrame {
     public viewInventory() {
         initComponents();
     }
-
+    
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,8 +55,6 @@ public class viewInventory extends javax.swing.JFrame {
         searchButton = new javax.swing.JButton();
         updateButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        productTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -150,8 +150,18 @@ public class viewInventory extends javax.swing.JFrame {
         });
 
         updateButton.setText("UPDATE");
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateButtonActionPerformed(evt);
+            }
+        });
 
         deleteButton.setText("DELETE");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -221,16 +231,6 @@ public class viewInventory extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        productTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Product ID", "Product Name", "Barcode", "Category", "Price", "Stock Level", "Reorder Level"
-            }
-        ));
-        jScrollPane1.setViewportView(productTable);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -239,20 +239,15 @@ public class viewInventory extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelJ, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(panelJ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelJ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -262,10 +257,10 @@ public class viewInventory extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(viewLabel)
-                .addContainerGap(518, Short.MAX_VALUE))
+                .addContainerGap(846, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,7 +282,9 @@ public class viewInventory extends javax.swing.JFrame {
     }//GEN-LAST:event_prodNameTextActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-   try {
+   
+        
+        try {
        try {
            // Load the MariaDB JDBC driver
            Class.forName("org.mariadb.jdbc.Driver");
@@ -335,7 +332,144 @@ public class viewInventory extends javax.swing.JFrame {
         // Handle parsing errors or SQL exceptions
         ex.printStackTrace(); // Handle this appropriately in your application
     }
+        checkLowStock();
+    }
+   
+
+private void checkLowStock() {
+    try {
+        // Fetch data from the database to get current stock levels
+        String query = "SELECT * FROM products WHERE stock_level < ?"; // Adjust your query accordingly
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, 5); // Set your low stock threshold
+        java.sql.ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            String productName = resultSet.getString("product_name");
+            int stockLevel = resultSet.getInt("stock_level");
+
+            // Check if stock level is low for each product
+            if (stockLevel < 5) {
+                // Trigger a notification
+                JOptionPane.showMessageDialog(this,
+                        "Low Stock Alert for " + productName + ". Current Stock: " + stockLevel,
+                        "Low Stock Alert",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        }
+
+        // Close the statement and result set after use
+        statement.close();
+        resultSet.close();
+
+    } catch (SQLException ex) {
+        // Handle SQL exceptions
+        ex.printStackTrace();
+    }
+}
+
+    private static class productTable {
+
+        public productTable() {
+        }
+    
     }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+
+    try {
+        // Create an SQL update query
+        try ( // Establish a connection to your database
+                Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/teamspiritpos", "root", "")) {
+            // Create an SQL update query
+            String sql = "UPDATE products SET product_name=?, barcode=?, category=?, price=?, stock_level=?, reorder_level=? WHERE product_id=?";
+            
+            // Prepare the statement
+            PreparedStatement statement = connection.prepareStatement(sql);
+            
+            // Set the parameters based on the text fields
+            statement.setString(1, prodNameText.getText());
+            statement.setString(2, barcodeText.getText());
+            statement.setString(3, categoryText.getText());
+            statement.setDouble(4, Double.parseDouble(priceText.getText()));
+            statement.setInt(5, Integer.parseInt(stocklevelText.getText()));
+            statement.setInt(6, Integer.parseInt(reorderText.getText()));
+            statement.setInt(7, Integer.parseInt(p_search.getText())); // Assuming p_search contains the product ID to update
+            
+            // Execute the update query
+            int rowsAffected = statement.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(this, "Update Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+                // You might want to update your UI or perform additional actions upon successful update
+            } else {
+                JOptionPane.showMessageDialog(this, "Update Failed", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            // Close the statement and connection
+            statement.close();
+        }
+    } catch (SQLException | NumberFormatException ex) {
+        // Handle any exceptions or errors
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+         try {
+        Class.forName("org.mariadb.jdbc.Driver");
+        String url = "jdbc:mariadb://localhost:3306/teamspiritpos";
+        String username = "root";
+        String password = "";
+        connection = DriverManager.getConnection(url, username, password);
+
+        String sql = "DELETE FROM products WHERE product_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, Integer.parseInt(p_search.getText()));
+
+        int rowsAffected = statement.executeUpdate();
+        if (rowsAffected > 0) {
+            JOptionPane.showMessageDialog(this, "Successfully Deleted", "Success", JOptionPane.INFORMATION_MESSAGE);
+            // Optionally, clear the input fields or update the display after deletion
+            // Clearing fields example:
+            clearFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to delete. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        statement.close();
+        connection.close();
+    } catch (ClassNotFoundException | SQLException ex) {
+        ex.printStackTrace();
+    }
+}  
+
+private void clearFields() {
+    prodNameText.setText("");
+    // Clear other input fields similarly
+}
+
+    private static class p_search {
+
+        private static String getText() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        public p_search() {
+        }
+    }
+
+    private static class prodNameText {
+
+        private static void setText(String string) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        public prodNameText() {
+        }
+    
+    }//GEN-LAST:event_deleteButtonActionPerformed
     
     /**
      * @param args the command line arguments
@@ -379,7 +513,6 @@ public class viewInventory extends javax.swing.JFrame {
     private javax.swing.JButton deleteButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField p_search;
     private javax.swing.JPanel panelJ;
     private javax.swing.JTextField priceText;
@@ -391,7 +524,6 @@ public class viewInventory extends javax.swing.JFrame {
     private javax.swing.JLabel prodPricee;
     private javax.swing.JLabel prodReorderLevell;
     private javax.swing.JLabel prodStockLevell;
-    private javax.swing.JTable productTable;
     private javax.swing.JTextField reorderText;
     private javax.swing.JButton searchButton;
     private javax.swing.JLabel searchID;
@@ -407,6 +539,20 @@ public class viewInventory extends javax.swing.JFrame {
 
         private void close() {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+    }
+
+    private static class resultSet {
+
+        private static boolean next() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        private static Object getString(String product_id) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        public resultSet() {
         }
     }
 }

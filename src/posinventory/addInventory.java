@@ -50,8 +50,6 @@ public class addInventory extends javax.swing.JFrame {
         goButton = new javax.swing.JButton();
         backButton2 = new javax.swing.JButton();
         viewButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        productTable = new javax.swing.JTable();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -97,16 +95,6 @@ public class addInventory extends javax.swing.JFrame {
             }
         });
 
-        productTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Product ID", "Product Name", "Barcode", "Category", "Price", "Stock Level", "Reorder Level"
-            }
-        ));
-        jScrollPane1.setViewportView(productTable);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -142,9 +130,7 @@ public class addInventory extends javax.swing.JFrame {
                                 .addComponent(goButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(backButton2)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,9 +171,6 @@ public class addInventory extends javax.swing.JFrame {
                         .addComponent(backButton2)
                         .addComponent(goButton)))
                 .addContainerGap(200, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -284,7 +267,6 @@ public class addInventory extends javax.swing.JFrame {
     private javax.swing.JButton backButton2;
     private javax.swing.JButton goButton;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel priceStockLevel;
     private javax.swing.JLabel prodBarcode;
     private javax.swing.JLabel prodCategory;
@@ -297,7 +279,6 @@ public class addInventory extends javax.swing.JFrame {
     private javax.swing.JLabel prodName;
     private javax.swing.JLabel prodPrice;
     private javax.swing.JLabel prodReorderLevel;
-    private javax.swing.JTable productTable;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
 }
