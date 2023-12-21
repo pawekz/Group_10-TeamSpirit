@@ -477,7 +477,7 @@ public class YourCashTransactionForm extends javax.swing.JFrame {
     // Other UI components go here
     // ...
 }
-
+// comment
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
