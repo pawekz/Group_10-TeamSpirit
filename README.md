@@ -15,7 +15,7 @@ Product Scanning and Inventory Management:
 
 🔲 As a cashier, I want to search for products by name or category.
 
-🔲 As a manager, I want to add, update, and delete products in the inventory.
+✅ As a manager, I want to add, update, and delete products in the inventory.
 
 🔲 As a manager, I want to track stock levels and receive alerts when items are low.
 
