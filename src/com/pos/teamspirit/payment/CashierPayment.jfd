@@ -1,0 +1,26 @@
+JFDML JFormDesigner: "8.2.1.0.348" Java: "17.0.9" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq t {space ::338:x, comp modeOfPaymentTitle:::p::p, space :p:279:p}, seq l {space :p:125:p, comp cashLabel:::p::p, space ::729:x}}"
+			"$verticalGroup": "par l {seq l {space :p:69:p, comp modeOfPaymentTitle:::p::p, space :p:74:p, comp cashLabel:::p::p, space ::449:x}}"
+		} ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "modeOfPaymentTitle"
+				"text": "SELECT MODE OF PAYMENT"
+				"font": new java.awt.Font( "Ubuntu", 3, 20 )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "cashLabel"
+				"text": "CASH"
+				"font": new java.awt.Font( "Segoe UI", 1, 20 )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 250, 90 )
+			"size": new java.awt.Dimension( 710, 535 )
+		} )
+	}
+}
