@@ -7,3 +7,7 @@ _-As a cashier, I want to input starting cash in my drawer and withdraw cash fro
 **START A SALE PAGE (ADD ITEM, CALCULATE) (POS_Transaction.java)**
 
 _-As a cashier, I want to start a new sale, add items to the cart, and calculate the total amount._
+
+
+
+-- Paulo Carabuena

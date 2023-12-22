@@ -4,9 +4,8 @@
 
 package com.pos.teamspirit.payment;
 
-import java.awt.*;
 import javax.swing.*;
-import javax.swing.GroupLayout;
+import java.awt.*;
 
 /**
  * @author Pawekz
@@ -21,6 +20,7 @@ public class CashierPayment extends JFrame {
         // Generated using JFormDesigner Evaluation license - ODETTE PISOWIFI
         modeOfPaymentTitle = new JLabel();
         cashLabel = new JLabel();
+        cashTextField = new JTextField();
 
         //======== this ========
         var contentPane = getContentPane();
@@ -33,6 +33,9 @@ public class CashierPayment extends JFrame {
         cashLabel.setText("CASH");
         cashLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
 
+        //---- cashTextField ----
+        cashTextField.setToolTipText("Enter Amount");
+
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
@@ -44,7 +47,9 @@ public class CashierPayment extends JFrame {
                 .addGroup(contentPaneLayout.createSequentialGroup()
                     .addGap(125, 125, 125)
                     .addComponent(cashLabel)
-                    .addContainerGap(729, Short.MAX_VALUE))
+                    .addGap(43, 43, 43)
+                    .addComponent(cashTextField, GroupLayout.PREFERRED_SIZE, 329, GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(336, Short.MAX_VALUE))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
@@ -52,8 +57,10 @@ public class CashierPayment extends JFrame {
                     .addGap(69, 69, 69)
                     .addComponent(modeOfPaymentTitle)
                     .addGap(74, 74, 74)
-                    .addComponent(cashLabel)
-                    .addContainerGap(449, Short.MAX_VALUE))
+                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(cashLabel)
+                        .addComponent(cashTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(433, Short.MAX_VALUE))
         );
         pack();
         setLocationRelativeTo(getOwner());
@@ -64,5 +71,6 @@ public class CashierPayment extends JFrame {
     // Generated using JFormDesigner Evaluation license - ODETTE PISOWIFI
     private JLabel modeOfPaymentTitle;
     private JLabel cashLabel;
+    private JTextField cashTextField;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

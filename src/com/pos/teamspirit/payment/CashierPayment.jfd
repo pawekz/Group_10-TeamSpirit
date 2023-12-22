@@ -4,8 +4,8 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq t {space ::338:x, comp modeOfPaymentTitle:::p::p, space :p:279:p}, seq l {space :p:125:p, comp cashLabel:::p::p, space ::729:x}}"
-			"$verticalGroup": "par l {seq l {space :p:69:p, comp modeOfPaymentTitle:::p::p, space :p:74:p, comp cashLabel:::p::p, space ::449:x}}"
+			"$horizontalGroup": "par l {seq t {space ::338:x, comp modeOfPaymentTitle:::p::p, space :p:279:p}, seq l {space :p:125:p, comp cashLabel:::p::p, space :p:43:p, comp cashTextField:::p:329:p, space ::336:x}}"
+			"$verticalGroup": "par l {seq l {space :p:69:p, comp modeOfPaymentTitle:::p::p, space :p:74:p, par b {comp cashLabel::b:p::p, comp cashTextField::b:p::p}, space ::433:x}}"
 		} ) {
 			name: "this"
 			add( new FormComponent( "javax.swing.JLabel" ) {
@@ -17,6 +17,10 @@ new FormModel {
 				name: "cashLabel"
 				"text": "CASH"
 				"font": new java.awt.Font( "Segoe UI", 1, 20 )
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "cashTextField"
+				"toolTipText": "Enter Amount"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 250, 90 )
