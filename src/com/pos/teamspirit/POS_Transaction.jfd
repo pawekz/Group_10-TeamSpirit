@@ -1,22 +1,23 @@
-JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.9" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.1.0.348" Java: "17.0.9" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq l {space :p:15:p, par t {seq t {comp selectOrderPanel:::p::p, space :::x, par l {seq t {comp confirmTransactionButton:::p::p, space :p:142:p, comp cancelTransactionButton:::p::p, space :p:86:p}, comp productSelectionPanel::t:p::p}}, comp transactionInfo:::p::p}, space ::15:x}}"
-			"$verticalGroup": "par l {seq l {space :p:15:p, comp transactionInfo:::p::p, space :::p, par l {comp selectOrderPanel:::::x, seq {comp productSelectionPanel:::p::p, space :0:0:x}}, space :p:45:p, par b {comp confirmTransactionButton::b:p::p, comp cancelTransactionButton::b:p::p}, space ::27:x}}"
+			"$horizontalGroup": "par l {seq l {space :p:15:p, par t:::p {comp transactionInfo::l:p::p, seq l {comp productList:::p:564:p, space s:::p, par l:::p {comp addProductToOrderButton:::::x, comp minusProductToOrderButton:::::x}, space s:::p, par l {seq t {space :0:0:x, comp cancelTransactionButton:::p::p}, comp orderList:::::x}}, seq t {comp totalLabel:::p:113:p, space s:::p, par l {comp confirmTransactionButton:::p::p, comp totalTextField:::p:224:p}}}, space ::30:x}}"
+			"$verticalGroup": "par l {seq l {space :p:15:p, comp transactionInfo:::p::p, par l {seq {space u:::p, par l {comp productList::::404:x, comp orderList::::404:x}, space s:::p, par b {comp totalLabel::b:p:42:p, comp totalTextField::b:p:42:p}, space :p:12:p}, seq l {space :p:103:p, comp addProductToOrderButton:::p::p, space s:::p, comp minusProductToOrderButton:::p::p, space ::292:x}}, par l {comp cancelTransactionButton:::p::p, comp confirmTransactionButton:::p::p}, space :p:37:p}}"
 		} ) {
 			name: "POS_Transaction"
 			"title": "ORDER PAGE"
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-				"$horizontalGroup": "par l {seq {space :::p, par l {comp customerNameLabel::l:p::p, comp customerAddressLabel::l:p::p}, space :p:35:p, par l:::p {comp customerNameTextField::::309:x, comp customerAddressTextField:::::x}, space ::26:x, comp customerTransactionLabel:::p::p, space :45:45:p, comp customerTransactionTextField:::p:309:p, space :p:15:p}}"
-				"$verticalGroup": "par l {seq l {space :::p, par t {par b {comp customerNameLabel::b:p::p, comp customerNameTextField::b:p::p}, par l {seq l {space :5:5:p, comp customerTransactionLabel:::p::p}, comp customerTransactionTextField:::p::p}}, space u:::p, par b {comp customerAddressLabel::b:p::p, comp customerAddressTextField::b:p::p}, space ::53:x}}"
+				"$horizontalGroup": "par l {seq {space :::p, par l {comp customerNameLabel::l:p::p, comp customerAddressLabel::l:p::p}, space :p:35:p, par l:::p {comp customerNameTextField::::309:x, comp customerAddressTextField:::::x}, space ::270:x, comp customerTransactionIDLabel:::p::p, space :45:45:p, comp customerTransactionIDTextField:::p:309:p, space :p:15:p}}"
+				"$verticalGroup": "par l {seq l {space :::p, par t {par b {comp customerNameLabel::b:p::p, comp customerNameTextField::b:p::p}, par l {seq l {space :5:5:p, comp customerTransactionIDLabel:::p::p}, comp customerTransactionIDTextField:::p::p}}, space u:::p, par b {comp customerAddressLabel::b:p::p, comp customerAddressTextField::b:p::p}, space ::147:x}}"
 			} ) {
 				name: "transactionInfo"
 				"border": new javax.swing.border.CompoundBorder( new javax.swing.border.TitledBorder( "Transaction Information" ), new javax.swing.border.EmptyBorder( 5, 5, 5, 5 ) )
 				add( new FormComponent( "javax.swing.JTextField" ) {
 					name: "customerNameTextField"
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "customerName", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
 					name: "customerNameLabel"
@@ -28,51 +29,74 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JTextField" ) {
 					name: "customerAddressTextField"
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "customerAddress", true ) )
 				} )
 				add( new FormComponent( "javax.swing.JLabel" ) {
-					name: "customerTransactionLabel"
-					"text": "Transaction Date"
+					name: "customerTransactionIDLabel"
+					"text": "Transaction ID"
 				} )
 				add( new FormComponent( "javax.swing.JTextField" ) {
-					name: "customerTransactionTextField"
-				} )
-			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-				"$horizontalGroup": "par l {seq l {space :::p, comp selectOrderScrollPane::::436:x, space :::p}}"
-				"$verticalGroup": "par l {seq l {comp selectOrderScrollPane::::0:x, space :::p}}"
-			} ) {
-				name: "selectOrderPanel"
-				"border": new javax.swing.border.TitledBorder( "Customer Order" )
-				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-					name: "selectOrderScrollPane"
-					add( new FormComponent( "javax.swing.JTable" ) {
-						name: "selectOrderTable"
-						auxiliary() {
-							"JavaCodeGenerator.variableName": "orderTable"
-						}
-					} )
-				} )
-			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-				"$horizontalGroup": "par l {seq l {space :::p, comp productSelectionScrollPane::::428:x, space :::p}}"
-				"$verticalGroup": "par l {seq l {comp productSelectionScrollPane::::360:x, space :::p}}"
-			} ) {
-				name: "productSelectionPanel"
-				"border": new javax.swing.border.TitledBorder( "Product" )
-				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-					name: "productSelectionScrollPane"
-					add( new FormComponent( "javax.swing.JTable" ) {
-						name: "productSelectionTable"
-					} )
+					name: "customerTransactionIDTextField"
+					"editable": false
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "customerTransactionID", true ) )
 				} )
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "cancelTransactionButton"
 				"text": "Cancel"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "cancelTransaction", true ) )
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "confirmTransactionButton"
 				"text": "Confirm"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "confirmTransaction", true ) )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "confirmTransaction", true ) )
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "productList"
+				addEvent( new FormEvent( "java.beans.PropertyChangeListener", "propertyChange", "customerSelectedProductPropertyChange", true, "horizontalScrollBar" ) )
+				addEvent( new FormEvent( "java.beans.PropertyChangeListener", "propertyChange", "customerSelectedProductPropertyChange", true, "horizontalScrollBar" ) )
+				addEvent( new FormEvent( "java.beans.PropertyChangeListener", "propertyChange", "productListPropertyChange", true, "verticalScrollBar" ) )
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "productListTable"
+					addEvent( new FormEvent( "java.beans.PropertyChangeListener", "propertyChange", "customerSelectedProductTablePropertyChange", true, "customerSelect" ) )
+				} )
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "orderList"
+				addEvent( new FormEvent( "java.beans.PropertyChangeListener", "propertyChange", "orderListPropertyChange", true, "verticalScrollBar" ) )
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "orderListTable"
+				} )
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "addProductToOrderButton"
+				"text": "+"
+				"font": new java.awt.Font( "Segoe UI", 1, 18 )
+				"toolTipText": "Select products (left) and it will appear in the order list (right)"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addProductToOrder", true ) )
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addProductToOrder", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "minusProductToOrderButton"
+				"text": "-"
+				"font": new java.awt.Font( "Segoe UI", 1, 18 )
+				"toolTipText": "Input the number of quantity to be removed in the order list"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "minusProductToOrder", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "totalTextField"
+				"editable": false
+				"font": new java.awt.Font( "Segoe UI", 1, 30 )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "totalLabel"
+				"text": "TOTAL:"
+				"toolTipText": "Total Amount"
+				"font": new java.awt.Font( "Segoe UI", 1, 24 )
+				auxiliary() {
+					"JavaCodeGenerator.variableName": "totalLabel"
+				}
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 80, 65 )

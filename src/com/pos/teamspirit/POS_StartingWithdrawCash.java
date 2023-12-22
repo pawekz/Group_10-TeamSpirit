@@ -19,12 +19,13 @@ import java.time.format.DateTimeFormatter;
  * @author Paulo "Pawekz" Carabuena
  */
 public class POS_StartingWithdrawCash  {
+    public static double startingCash = 0;
 
-    private void startingCashConfirm(ActionEvent e) {
+    public void startingCashConfirm(ActionEvent e) {
         // TODO add your code here
 
 
-        double startingCash = Double.parseDouble(startingCashTextField.getText());
+        startingCash = Double.parseDouble(startingCashTextField.getText());
         int cashierID = 1;
         String startTimeOfTransaction = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
@@ -97,7 +98,7 @@ public class POS_StartingWithdrawCash  {
         }
     }
 
-    private BigDecimal getEndingCash(Connection db, int cashierID) throws SQLException {
+    public static BigDecimal getEndingCash(Connection db, int cashierID) throws SQLException {
         BigDecimal endingCashDB = null;
         String query1 = "SELECT ending_cash as endingCash FROM teamspiritpos.sales WHERE cashier_id = ? ORDER BY sale_id DESC LIMIT 1";
         try (PreparedStatement pstmt = db.prepareStatement(query1)) {
@@ -309,7 +310,7 @@ public class POS_StartingWithdrawCash  {
     private JFrame pos_starting_withdraw_cash;
     private JPanel startingCashPanel;
     private JLabel startingCashLabel;
-    private JTextField startingCashTextField;
+    private static JTextField startingCashTextField;
     private JButton startingCashConfirmButton;
     private JButton startingCashCancelButton;
     private JPanel withdrawCashPanel;
