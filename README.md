@@ -17,7 +17,7 @@ Product Scanning and Inventory Management:
 
 ✅ As a manager, I want to add, update, and delete products in the inventory.
 
-🔲 As a manager, I want to track stock levels and receive alerts when items are low.
+✅ As a manager, I want to track stock levels and receive alerts when items are low.
 
 Sales Transactions and Payment Processing:
 
