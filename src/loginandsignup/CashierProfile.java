@@ -310,8 +310,8 @@ public class CashierProfile extends javax.swing.JFrame {
         System.exit(0);
     }
 
-       private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {
-    String cashierID = txtID.getText(); // Add this line
+        private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {
+    String cashierID = txtID.getText();
     String username = txtUser.getText();
     String fullName = txtFullName.getText();
     String password = new String(txtPass.getPassword());
@@ -321,7 +321,13 @@ public class CashierProfile extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
-    
+
+    // Check if the username already exists in the database
+    if (isUsernameExists(username, cashierID)) {
+        JOptionPane.showMessageDialog(this, "Username already exists. Please choose a different username.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
     try {
         String url = "jdbc:mysql://localhost:3306/teamspiritpos";
         String user = "root";
@@ -338,7 +344,7 @@ public class CashierProfile extends javax.swing.JFrame {
             sql = "UPDATE cashiers SET fullName = ?, username = ?, password = ?, is_active = ? WHERE cashier_id = ?";
         }
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, fullName);
             statement.setString(2, username);
             statement.setString(3, password);
@@ -349,17 +355,70 @@ public class CashierProfile extends javax.swing.JFrame {
                 statement.setString(5, cashierID);
             }
 
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+
+            // Check if the insert/update was successful
+            if (affectedRows > 0) {
+                // If it's an insert, get the generated cashier ID
+                if (cashierID.isEmpty()) {
+                    try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            cashierID = String.valueOf(generatedKeys.getInt(1));
+                            txtID.setText(cashierID);
+                        }
+                    }
+                }
+
+                JOptionPane.showMessageDialog(this, "Cashier information saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to save cashier information", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
         fetchDataFromDatabase();
         clearFields();
-        JOptionPane.showMessageDialog(this, "Cashier information saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
 
     } catch (SQLException e) {
         e.printStackTrace();
         // Handle the exception based on your application's requirements
     }
+}
+
+
+
+    // Method to check if the username already exists in the database
+private boolean isUsernameExists(String username, String currentCashierID) {
+    boolean exists = false;
+
+    try {
+        // Your existing database connection code...
+        
+        String url = "jdbc:mysql://localhost:3306/teamspiritpos";
+        String user = "root";
+        String dbPassword = "";
+
+        Connection connection = DriverManager.getConnection(url, user, dbPassword);
+
+        String sql = "SELECT COUNT(*) FROM cashiers WHERE username = ? AND cashier_id <> ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, username);
+            statement.setString(2, currentCashierID);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    exists = count > 0;
+                }
+            }
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle the exception based on your application's requirements
+    }
+
+    return exists;
 }
 
 
