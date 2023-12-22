@@ -1,205 +1,250 @@
-CREATE DATABASE  IF NOT EXISTS `teamspiritpos` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `teamspiritpos`;
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1    Database: teamspiritpos
--- ------------------------------------------------------
--- Server version	8.0.35
+-- Host: 127.0.0.1
+-- Generation Time: Dec 22, 2023 at 11:24 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `teamspiritpos`
+--
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `admin`
 --
 
-DROP TABLE IF EXISTS `admin`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
-  `admin_id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`admin_id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `password` (`password`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `admin_id` int(11) NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `full_name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `admin`
 --
 
-LOCK TABLES `admin` WRITE;
-/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (1,'pawekz','12345'),(3,'donna','1234');
-/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `admin` (`admin_id`, `username`, `password`, `full_name`) VALUES
+(1, 'pawekz', '12345', NULL),
+(3, 'donna', '1234', NULL),
+(4, 'john@gmail.com', '123123', 'john baclayon'),
+(5, 'john', '123', 'johnmichael'),
+(6, 'niel', '123456', 'niel master'),
+(9, 'janna187', '123456789', 'janna fors'),
+(11, 'johnny2', '741852', 'johnny2'),
+(15, 'johnnyb', 'Jb*963.', 'John Michael Baclayon'),
+(16, 'adminteamspirit', 'admin187', 'team spirit ');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `cashiers`
 --
 
-DROP TABLE IF EXISTS `cashiers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cashiers` (
-  `cashier_id` int NOT NULL AUTO_INCREMENT,
-  `FullName` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'Full Name of the Cashier',
-  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `is_active` tinyint(1) NOT NULL,
-  PRIMARY KEY (`cashier_id`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `cashier_id` int(11) NOT NULL,
+  `fullName` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `is_active` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cashiers`
 --
 
-LOCK TABLES `cashiers` WRITE;
-/*!40000 ALTER TABLE `cashiers` DISABLE KEYS */;
-INSERT INTO `cashiers` VALUES (1,NULL,'pawekz','1234',1),(2,NULL,'mhira','1234',1),(3,NULL,'donnot','1234',0);
-/*!40000 ALTER TABLE `cashiers` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT INTO `cashiers` (`cashier_id`, `fullName`, `username`, `password`, `is_active`) VALUES
+(2, 'janna', 'janna123', '123', 'Active'),
+(3, 'John Michael Baclayon', 'john187', '123', 'Active');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `inventory_transactions`
 --
 
-DROP TABLE IF EXISTS `inventory_transactions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `inventory_transactions` (
-  `transaction_id` int NOT NULL AUTO_INCREMENT,
-  `product_id` int NOT NULL,
-  `transaction_type` char(1) COLLATE utf8mb4_general_ci NOT NULL,
-  `quantity` int NOT NULL,
-  PRIMARY KEY (`transaction_id`),
-  KEY `product_id` (`product_id`),
-  CONSTRAINT `inventory_transactions_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
+  `transaction_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `transaction_type` char(1) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `timestamp` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `inventory_transactions`
---
-
-LOCK TABLES `inventory_transactions` WRITE;
-/*!40000 ALTER TABLE `inventory_transactions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `inventory_transactions` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `products`
 --
 
-DROP TABLE IF EXISTS `products`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `products` (
-  `product_id` int NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `barcode` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `category` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `barcode` varchar(255) DEFAULT NULL,
+  `category` varchar(255) NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `stock_level` int NOT NULL,
-  `reorder_level` int NOT NULL,
-  PRIMARY KEY (`product_id`),
-  UNIQUE KEY `barcode` (`barcode`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `products`
---
-
-LOCK TABLES `products` WRITE;
-/*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Titan Hair Gel','10001','COSMETICS',16.00,100,20),(2,'Titan Gel','10002','ENHANCEMENT',566.00,20,0),(3,'Zennas Tinapa','10003','FOOD',699.00,10,0),(4,'Pawekz Inun onan','10004','FOOD',1000.00,5,1);
-/*!40000 ALTER TABLE `products` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `sale_items`
---
-
-DROP TABLE IF EXISTS `sale_items`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sale_items` (
-  `sale_item_id` int NOT NULL AUTO_INCREMENT,
-  `sale_id` int NOT NULL,
-  `product_id` int NOT NULL,
-  `quantity` int NOT NULL,
-  `unit_price` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`sale_item_id`),
-  KEY `sale_id` (`sale_id`),
-  KEY `product_id` (`product_id`),
-  CONSTRAINT `sale_items_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`sale_id`),
-  CONSTRAINT `sale_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
+  `stock_level` int(11) NOT NULL,
+  `reorder_level` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `sale_items`
---
-
-LOCK TABLES `sale_items` WRITE;
-/*!40000 ALTER TABLE `sale_items` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sale_items` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `sales`
 --
 
-DROP TABLE IF EXISTS `sales`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sales` (
-  `sale_id` int NOT NULL AUTO_INCREMENT,
-  `cashier_id` int NOT NULL,
+  `sale_id` int(11) NOT NULL,
+  `cashier_id` int(11) NOT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime DEFAULT NULL,
-  `total_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `payment_method` varchar(255) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'CASH',
+  `total_amount` decimal(10,2) NOT NULL,
+  `payment_method` varchar(255) NOT NULL,
   `starting_cash` decimal(10,2) NOT NULL,
-  `ending_cash` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `customer_name` varchar(128) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `customer_address` varchar(128) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`sale_id`),
-  KEY `cashier_id` (`cashier_id`),
-  CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`cashier_id`) REFERENCES `cashiers` (`cashier_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `ending_cash` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `sales`
+-- Table structure for table `sale_items`
 --
 
-LOCK TABLES `sales` WRITE;
-/*!40000 ALTER TABLE `sales` DISABLE KEYS */;
-INSERT INTO `sales` VALUES (15,1,'2023-12-19 15:17:33','2023-12-19 15:17:46',0.00,'CASH',12314.12,12314.52,NULL,NULL),(16,1,'2023-12-19 20:56:50','2023-12-19 20:56:52',1000.00,'CASH',12314.52,13314.52,NULL,NULL),(17,1,'2023-12-19 20:57:32','2023-12-19 20:57:34',500.00,'CASH',13314.52,13814.52,NULL,NULL),(18,2,'2023-12-19 20:58:34','2023-12-19 20:58:37',100.00,'CASH',13814.52,13914.52,NULL,NULL);
-/*!40000 ALTER TABLE `sales` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+CREATE TABLE `sale_items` (
+  `sale_item_id` int(11) NOT NULL,
+  `sale_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `unit_price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`admin_id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `password` (`password`),
+  ADD KEY `username_2` (`username`);
+
+--
+-- Indexes for table `cashiers`
+--
+ALTER TABLE `cashiers`
+  ADD PRIMARY KEY (`cashier_id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `inventory_transactions`
+--
+ALTER TABLE `inventory_transactions`
+  ADD PRIMARY KEY (`transaction_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`product_id`),
+  ADD UNIQUE KEY `barcode` (`barcode`);
+
+--
+-- Indexes for table `sales`
+--
+ALTER TABLE `sales`
+  ADD PRIMARY KEY (`sale_id`),
+  ADD KEY `cashier_id` (`cashier_id`);
+
+--
+-- Indexes for table `sale_items`
+--
+ALTER TABLE `sale_items`
+  ADD PRIMARY KEY (`sale_item_id`),
+  ADD KEY `sale_id` (`sale_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `cashiers`
+--
+ALTER TABLE `cashiers`
+  MODIFY `cashier_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `inventory_transactions`
+--
+ALTER TABLE `inventory_transactions`
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `sales`
+--
+ALTER TABLE `sales`
+  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `sale_items`
+--
+ALTER TABLE `sale_items`
+  MODIFY `sale_item_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `inventory_transactions`
+--
+ALTER TABLE `inventory_transactions`
+  ADD CONSTRAINT `inventory_transactions_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+
+--
+-- Constraints for table `sales`
+--
+ALTER TABLE `sales`
+  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`cashier_id`) REFERENCES `cashiers` (`cashier_id`);
+
+--
+-- Constraints for table `sale_items`
+--
+ALTER TABLE `sale_items`
+  ADD CONSTRAINT `sale_items_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`sale_id`),
+  ADD CONSTRAINT `sale_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2023-12-21 22:00:26
