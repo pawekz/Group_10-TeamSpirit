@@ -1,6 +1,12 @@
-package javaapp;
+package loginandsignup;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class CashierProfile extends javax.swing.JFrame {
 
@@ -21,24 +27,63 @@ public class CashierProfile extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable;
     private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtPass;
     private javax.swing.JTextField txtUser;
     private javax.swing.JTextField txtFullName;
-    
+    private javax.swing.JPasswordField txtPass; // Added this line
+    private DefaultTableModel model;
 
     public CashierProfile() {
         initComponents();
+        model = (DefaultTableModel) jTable.getModel();
+        fetchDataFromDatabase();
+    }
+
+    private void fetchDataFromDatabase() {
+        try {
+            // JDBC URL, username, and password of MySQL server
+            String url = "jdbc:mysql://localhost:3306/teamspiritpos";
+            String user = "root";
+            String password = "";
+
+            // Establish the connection
+            Connection connection = DriverManager.getConnection(url, user, password);
+
+            // The SQL query to select all records from the "cashiers" table
+            String sql = "SELECT cashier_id, fullName, username, is_active FROM cashiers";
+
+            try (PreparedStatement statement = connection.prepareStatement(sql);
+                 ResultSet resultSet = statement.executeQuery()) {
+
+                // Clear existing data in the table
+                model.setRowCount(0);
+
+                // Populate the table with data from the database
+                while (resultSet.next()) {
+                    String cashierID = resultSet.getString("cashier_id");
+                    String username = resultSet.getString("username");
+                    String fullName = resultSet.getString("fullName");
+                    String status = resultSet.getString("is_active");
+
+                    model.addRow(new Object[]{cashierID, username, fullName, status});
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception based on your application's requirements
+        }
     }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
-
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         txtID = new javax.swing.JTextField();
-        txtPass = new javax.swing.JTextField();
+        // Add the following line to set txtID non-editable
+        txtID.setEditable(false);
+        txtPass = new javax.swing.JPasswordField(); // Add this line to initialize txtPass
         cboStatus = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -51,7 +96,6 @@ public class CashierProfile extends javax.swing.JFrame {
         btnNew = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
-        btnSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,18 +137,11 @@ public class CashierProfile extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User Entry", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 0, 18))); // NOI18N
 
         txtID.setFont(new java.awt.Font("Calibri", 0, 14));
-
-        txtPass.setFont(new java.awt.Font("Calibri", 0, 14));
-
         cboStatus.setFont(new java.awt.Font("Calibri", 0, 14));
-        cboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--", "Active", "Inactive" }));
+        cboStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"--", "Active", "Inactive"}));
 
         jLabel2.setFont(new java.awt.Font("Calibri", 0, 14));
         jLabel2.setText("Username");
-
-        jLabel3.setFont(new java.awt.Font("Calibri", 0, 14));
-        jLabel3.setText("Password");
-
         jLabel4.setFont(new java.awt.Font("Calibri", 0, 14));
         jLabel4.setText("Status");
 
@@ -132,12 +169,11 @@ public class CashierProfile extends javax.swing.JFrame {
             }
         });
 
-        // Change "User ID" to "Cashier ID"
         jLabel5.setFont(new java.awt.Font("Calibri", 0, 14));
         jLabel5.setText("Cashier ID");
+        jLabel5.setVisible(false);
 
         txtUser.setFont(new java.awt.Font("Calibri", 0, 14));
-
         btnNew.setFont(new java.awt.Font("Calibri", 0, 14));
         btnNew.setText("New");
         btnNew.addActionListener(new java.awt.event.ActionListener() {
@@ -152,15 +188,18 @@ public class CashierProfile extends javax.swing.JFrame {
         txtFullName = new javax.swing.JTextField();
         txtFullName.setFont(new java.awt.Font("Calibri", 0, 14));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+        jLabel3.setFont(new java.awt.Font("Calibri", 0, 14));
+        jLabel3.setText("Password");
+
+      javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+    jPanel2.setLayout(jPanel2Layout);
+    jPanel2Layout.setHorizontalGroup(
+        jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(jPanel2Layout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                   .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(cboStatus, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -174,15 +213,15 @@ public class CashierProfile extends javax.swing.JFrame {
                         .addGap(18, 18, 18))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtUser, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)) // Added this line
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -203,8 +242,8 @@ public class CashierProfile extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
+                .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE) // Added this line
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cboStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -218,19 +257,13 @@ public class CashierProfile extends javax.swing.JFrame {
         );
 
         jTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Username", "Full Name", "Password", "Status"
-            }
+            new Object[][]{},
+            new String[]{"ID", "Username", "Full Name", "Status"}
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
+            boolean[] canEdit = new boolean[]{false, false, false, false};
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         jTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -243,8 +276,7 @@ public class CashierProfile extends javax.swing.JFrame {
             jTable.getColumnModel().getColumn(0).setMaxWidth(50);
             jTable.getColumnModel().getColumn(1).setMaxWidth(200);
             jTable.getColumnModel().getColumn(2).setMaxWidth(200);
-            jTable.getColumnModel().getColumn(3).setMaxWidth(150);
-            jTable.getColumnModel().getColumn(4).setMaxWidth(90);
+            jTable.getColumnModel().getColumn(3).setMaxWidth(90);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -274,47 +306,210 @@ public class CashierProfile extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
-    
-    
-    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         System.exit(0);
     }
 
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        // Your save button logic here
-        
-         String cashierID = txtID.getText();
-        String username = txtUser.getText();
-        String fullName = txtFullName.getText();
-        String password = txtPass.getText();
-        String status = cboStatus.getSelectedItem().toString();
+       private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {
+    String cashierID = txtID.getText(); // Add this line
+    String username = txtUser.getText();
+    String fullName = txtFullName.getText();
+    String password = new String(txtPass.getPassword());
+    String status = cboStatus.getSelectedItem().toString();
 
-        // Add data to the table
-        model.addRow(new Object[]{cashierID, username, fullName, password, status});
-
-        // Clear the input fields after saving
-        clearFields();
+    if (username.isEmpty() || fullName.isEmpty() || password.isEmpty() || status.equals("--")) {
+        JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
     }
+    
+    try {
+        String url = "jdbc:mysql://localhost:3306/teamspiritpos";
+        String user = "root";
+        String dbPassword = "";
+
+        Connection connection = DriverManager.getConnection(url, user, dbPassword);
+
+        String sql;
+        if (cashierID.isEmpty()) {
+            // Insert new cashier entry
+            sql = "INSERT INTO cashiers (fullName, username, password, is_active) VALUES (?, ?, ?, ?)";
+        } else {
+            // Update existing cashier entry
+            sql = "UPDATE cashiers SET fullName = ?, username = ?, password = ?, is_active = ? WHERE cashier_id = ?";
+        }
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, fullName);
+            statement.setString(2, username);
+            statement.setString(3, password);
+            statement.setString(4, status);
+
+            // Set the cashierID parameter if it's an update
+            if (!cashierID.isEmpty()) {
+                statement.setString(5, cashierID);
+            }
+
+            statement.executeUpdate();
+        }
+
+        fetchDataFromDatabase();
+        clearFields();
+        JOptionPane.showMessageDialog(this, "Cashier information saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle the exception based on your application's requirements
+    }
+}
+
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {
+    // Add code for editing a cashier's information here
+    int selectedRowIndex = jTable.getSelectedRow();
+
+    // Check if a row is selected
+    if (selectedRowIndex != -1) {
+        // Get the values from the selected row
+        String cashierID = jTable.getValueAt(selectedRowIndex, 0).toString();
+        String username = jTable.getValueAt(selectedRowIndex, 1).toString();
+        String fullName = jTable.getValueAt(selectedRowIndex, 2).toString();
+        String password = getPasswordFromDatabase(cashierID); // Fetch the password from the database
+        String status = jTable.getValueAt(selectedRowIndex, 3).toString();
+
+        // Set the values to the form for editing
+        txtID.setText(cashierID);
+        txtUser.setText(username);
+        txtFullName.setText(fullName);
+        txtPass.setText(password);
+        cboStatus.setSelectedItem(status);
+        // You may choose to disable or modify other components based on your requirements
+    } else {
+        JOptionPane.showMessageDialog(this, "Please select a row to edit", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+// Method to fetch the password from the database based on the cashierID
+private String getPasswordFromDatabase(String cashierID) {
+    String password = "";
+
+    try {
+        String url = "jdbc:mysql://localhost:3306/teamspiritpos";
+        String user = "root";
+        String dbPassword = "";
+
+        Connection connection = DriverManager.getConnection(url, user, dbPassword);
+
+        String sql = "SELECT password FROM cashiers WHERE cashier_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, cashierID);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    password = resultSet.getString("password");
+                }
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle the exception based on your application's requirements
+    }
+
+    return password;
+}
+
+
+        
+    
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
+        // Add code for deleting a cashier's information here
+        
+    // Get the selected row index
+    int selectedRowIndex = jTable.getSelectedRow();
+
+    // Check if a row is selected
+    if (selectedRowIndex != -1) {
+        // Get the value from the selected row
+        String cashierID = jTable.getValueAt(selectedRowIndex, 0).toString();
+
+        // Delete the selected cashier entry from the database
+        try {
+            String url = "jdbc:mysql://localhost:3306/teamspiritpos";
+            String user = "root";
+            String dbPassword = "";
+
+            Connection connection = DriverManager.getConnection(url, user, dbPassword);
+
+            String sql = "DELETE FROM cashiers WHERE cashier_id = ?";
+
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, cashierID);
+
+                // Execute the query
+                statement.executeUpdate();
+            }
+
+            // Refresh the table with updated data
+            fetchDataFromDatabase();
+
+            // Clear the input fields
+            clearFields();
+
+            JOptionPane.showMessageDialog(this, "Cashier information deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle the exception based on your application's requirements
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Please select a row to delete", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+        
     
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {
-        // Your new button logic here
+        // Add code for creating a new cashier entry here
+        
+        // Clear the input fields
+    clearFields();
+    // Enable or modify other components based on your requirements
+
+        
     }
 
     private void jTableMouseClicked(java.awt.event.MouseEvent evt) {
-        // Your table click logic here
+        // Add code to handle mouse clicks on the table (e.g., for selecting a row to edit)
     }
 
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {
-        // Your edit button logic here
-    }
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
-        // Your delete button logic here
+    private void clearFields() {
+        txtID.setText("");
+        txtUser.setText("");
+        txtFullName.setText("");
+        txtPass.setText("");
+        cboStatus.setSelectedIndex(0);
     }
 
     public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CashierProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new CashierProfile().setVisible(true);
         });

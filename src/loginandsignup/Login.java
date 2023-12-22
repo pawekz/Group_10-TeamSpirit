@@ -1,5 +1,7 @@
 
 package loginandsignup;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -200,7 +202,7 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
-        SignUp SignUpFrame = new SignUp();
+        signup SignUpFrame = new signup();
         SignUpFrame.setVisible(true);
         SignUpFrame.pack();
         SignUpFrame.setLocationRelativeTo(null); 
@@ -209,52 +211,90 @@ public class Login extends javax.swing.JFrame {
 
     private void LoginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginBtnActionPerformed
         // System.out.println("Sign up btn clicked");
-        String Username, Password, query, fname = null, passDb = null;
-        String SUrl, SUser, SPass;
-        SUrl = "jdbc:MySQL://localhost:3306/teamspiritpos";
-        SUser = "root";
-        SPass = "";
-        int notFound = 0;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(SUrl, SUser, SPass);
-            Statement st = con.createStatement();
-            if("".equals(username.getText())){
-                JOptionPane.showMessageDialog(new JFrame(), "Username Address is require", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }else if("".equals(password.getText())){
-                JOptionPane.showMessageDialog(new JFrame(), "Password is require", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }else {
-            Username    = username.getText();
-            Password = password.getText();
-            
-            query = "SELECT * FROM admin WHERE username= '"+Username+"'";
-       
-            ResultSet rs = st.executeQuery(query);
-            while(rs.next()){
-                passDb = rs.getString("password");
-                fname = rs.getString("full_name");
-                notFound = 1;
+                                                  
+    String SUrl = "jdbc:mysql://localhost:3306/teamspiritpos";
+    String SUser = "root";
+    String SPass = "";
+
+    // Assuming you have JTextField objects for usernameField and passwordField
+    String enteredUsername = username.getText().trim();
+    String enteredPassword = password.getText().trim();
+    
+    if (enteredUsername.isEmpty() || enteredPassword.isEmpty()) {
+        // Show a message if either username or password is empty
+        JOptionPane.showMessageDialog(this, "Please fillout the username and password.", "Error", JOptionPane.ERROR_MESSAGE);
+        return; // Exit the method to prevent further execution
+    }
+
+    String loginQueryAdmin = "SELECT * FROM admin WHERE username = ? AND password = ?";
+    String loginQueryCashier = "SELECT * FROM cashiers WHERE username = ? AND password = ?";
+
+   
+    try {
+        Connection con = DriverManager.getConnection(SUrl, SUser, SPass);
+
+        // Use a PreparedStatement to prevent SQL injection
+        try (PreparedStatement stmtAdmin = con.prepareStatement(loginQueryAdmin);
+             PreparedStatement stmtCashier = con.prepareStatement(loginQueryCashier)) {
+
+            // Admin login check
+            stmtAdmin.setString(1, enteredUsername);
+            stmtAdmin.setString(2, enteredPassword);
+            ResultSet adminResult = stmtAdmin.executeQuery();
+
+            if (adminResult.next()) {
+                // Admin login successful
+                String adminFullName = adminResult.getString("full_name");
+                System.out.println("Login as admin successful. Full Name: " + adminFullName);
+
+                // Redirect to Home after successful login
+                Home homeFrame = new Home();
+                homeFrame.setVisible(true);
+                homeFrame.pack();
+                homeFrame.setLocationRelativeTo(null);
+                this.dispose(); // Close the current login frame
+
+                // Show success message
+                JOptionPane.showMessageDialog(this, "Login successful as admin. Welcome, " + adminFullName);
+            } else {
+                // Admin login failed, try cashier login
+                stmtCashier.setString(1, enteredUsername);
+                stmtCashier.setString(2, enteredPassword);
+                ResultSet cashierResult = stmtCashier.executeQuery();
+
+                if (cashierResult.next()) {
+                    // Cashier login successful
+                    String cashierFullName = cashierResult.getString("fullName");
+                    System.out.println("Login as cashier successful. Full Name: " + cashierFullName);
+
+                    // Redirect to Home after successful login
+                    Home homeFrame = new Home();
+                    homeFrame.setVisible(true);
+                    homeFrame.pack();
+                    homeFrame.setLocationRelativeTo(null);
+                    this.dispose(); // Close the current login frame
+
+                    // Show success message
+                    JOptionPane.showMessageDialog(this, "Login successful as cashier. Welcome, " + cashierFullName);
+                } else {
+                    // Both logins failed
+                    System.out.println("Login failed. Incorrect username or password.");
+
+                    // Show error message
+                    JOptionPane.showMessageDialog(this, "Login failed. Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            if(notFound == 1 && Password.equals(passDb)){
-                Home HomeFrame = new Home();
-                HomeFrame.setUser(fname);
-                HomeFrame.setVisible(true);
-                HomeFrame.pack();
-                HomeFrame.setLocationRelativeTo(null); 
-                this.dispose();
-            }else{
-               JOptionPane.showMessageDialog(new JFrame(), "Incorrect username or password", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-            password.setText("");
-            
-            }
-        }catch(Exception e){
-           System.out.println("Error!" + e.getMessage()); 
         }
-        
+
+    } catch (SQLException e) {
+        System.out.println("Error: " + e.getMessage());
+
+        // Show error message
+        JOptionPane.showMessageDialog(this, "An error occurred during login. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+
+
     }//GEN-LAST:event_LoginBtnActionPerformed
 
        
@@ -284,4 +324,8 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField password;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
+
+public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(() -> new Login().setVisible(true));
+}
 }
