@@ -5,8 +5,6 @@
 package com.pos.teamspirit;
 
 
-import loginandsignup.Login;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.event.ActionEvent;
