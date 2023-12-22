@@ -1,11 +1,11 @@
 
 package loginandsignup;
+
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+
 import static javax.swing.JOptionPane.showMessageDialog;
 
 
@@ -226,8 +226,8 @@ public class SignUp extends javax.swing.JFrame {
         String fullName, username, Password, query;
         String SUrl, SUser, SPass;
         SUrl = "jdbc:MySQL://localhost:3306/teamspiritpos";
-        SUser = "root";
-        SPass = "";
+        SUser = "admin";
+        SPass = "password";
         
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
