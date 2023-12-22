@@ -243,11 +243,31 @@ public class Login extends javax.swing.JFrame {
             ResultSet adminResult = stmtAdmin.executeQuery();
 
             if (adminResult.next()) {
-                // Admin login successful
-                String adminFullName = adminResult.getString("full_name");
-                System.out.println("Login as admin successful. Full Name: " + adminFullName);
+            // Admin login successful
+            String adminFullName = adminResult.getString("full_name");
+            System.out.println("Login as admin successful. Full Name: " + adminFullName);
 
-                // Redirect to Home after successful login
+            // Redirect to CashierProfile after successful admin login
+            CashierProfile cashierProfileFrame = new CashierProfile();
+            cashierProfileFrame.setVisible(true);
+            cashierProfileFrame.pack();
+            cashierProfileFrame.setLocationRelativeTo(null);
+            this.dispose(); // Close the current login frame
+
+            // Show success message
+            JOptionPane.showMessageDialog(this, "Login successful as admin. Welcome, " + adminFullName);
+        } else {
+            // Cashier login failed, try cashier login
+            stmtCashier.setString(1, enteredUsername);
+            stmtCashier.setString(2, enteredPassword);
+            ResultSet cashierResult = stmtCashier.executeQuery();
+
+            if (cashierResult.next()) {
+                // Cashier login successful
+                String cashierFullName = cashierResult.getString("fullName");
+                System.out.println("Login as cashier successful. Full Name: " + cashierFullName);
+
+                // Redirect to Home after successful cashier login
                 Home homeFrame = new Home();
                 homeFrame.setVisible(true);
                 homeFrame.pack();
@@ -255,43 +275,25 @@ public class Login extends javax.swing.JFrame {
                 this.dispose(); // Close the current login frame
 
                 // Show success message
-                JOptionPane.showMessageDialog(this, "Login successful as admin. Welcome, " + adminFullName);
+                JOptionPane.showMessageDialog(this, "Login successful as cashier. Welcome, " + cashierFullName);
             } else {
-                // Admin login failed, try cashier login
-                stmtCashier.setString(1, enteredUsername);
-                stmtCashier.setString(2, enteredPassword);
-                ResultSet cashierResult = stmtCashier.executeQuery();
+                // Both logins failed
+                System.out.println("Login failed. Incorrect username or password.");
 
-                if (cashierResult.next()) {
-                    // Cashier login successful
-                    String cashierFullName = cashierResult.getString("fullName");
-                    System.out.println("Login as cashier successful. Full Name: " + cashierFullName);
-
-                    // Redirect to Home after successful login
-                    Home homeFrame = new Home();
-                    homeFrame.setVisible(true);
-                    homeFrame.pack();
-                    homeFrame.setLocationRelativeTo(null);
-                    this.dispose(); // Close the current login frame
-
-                    // Show success message
-                    JOptionPane.showMessageDialog(this, "Login successful as cashier. Welcome, " + cashierFullName);
-                } else {
-                    // Both logins failed
-                    System.out.println("Login failed. Incorrect username or password.");
-
-                    // Show error message
-                    JOptionPane.showMessageDialog(this, "Login failed. Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                // Show error message
+                JOptionPane.showMessageDialog(this, "Login failed. Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
-    } catch (SQLException e) {
-        System.out.println("Error: " + e.getMessage());
+                }
 
-        // Show error message
-        JOptionPane.showMessageDialog(this, "An error occurred during login. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+            } catch (SQLException e) {
+                System.out.println("Error: " + e.getMessage());
+
+                // Show error message
+                JOptionPane.showMessageDialog(this, "An error occurred during login. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
 
 
 
